@@ -17,11 +17,60 @@ public class AppDB {
     public AppDB(){
         
         try(var conn = getConnection()){
-            listarEstados(conn);
-            localizarEstado(conn, "RJ");
-            listarDadosTabela(conn, "cliente");
+            //listarEstados(conn);
+            //localizarEstado(conn, "RJ");
+
+            var marca = new Marca();
+            marca.setId(1L);
+
+            var produto = new Produto();
+            produto.setId(201L);
+            produto.setMarca(marca);
+            produto.setNome("nome novooo 2");
+            produto.setValor(200.0);
+            alterarProduto(conn, produto);
+            excluirProduto(conn, 203L);            
+            listarDadosTabela(conn, "produto");
+
         }catch (SQLException e) {
                 System.err.println("não foi possivel conectar ao banco de dados:" + e.getMessage()); 
+        }
+    }
+
+    private void excluirProduto(Connection conn, long l) {
+        var sql = "delete from produto where id=?";
+        try (var statement = conn.prepareStatement(sql)) {
+            statement.setLong(1, l);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("não foi possivel executar a consulta ao banco de dados:" + e.getMessage()); 
+
+        }
+    }
+
+    private void alterarProduto(Connection conn, Produto produto) {
+        var sql = "update produto set nome=?, marca_id=?,valor=? where id=? ";
+        try (var statement = conn.prepareStatement(sql)) {
+            statement.setString(1, produto.getNome());
+            statement.setLong(2, produto.getMarca().getId());
+            statement.setDouble(3, produto.getValor());
+            statement.setLong(4, produto.getId());
+            
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("não foi possivel executar a consulta ao banco de dados:" + e.getMessage()); 
+        }
+    }
+
+    private void inserirProduto(Connection conn, Produto produto) {
+        var sql = "insert into produto (nome,marca_id,valor) values (?, ?, ?)";
+        try (var statement = conn.prepareStatement(sql)) {
+            statement.setString(1, produto.getNome());
+            statement.setLong(2, produto.getMarca().getId());
+            statement.setDouble(3, produto.getValor());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("não foi possivel executar a consulta ao banco de dados:" + e.getMessage()); 
         }
     }
 
@@ -30,8 +79,14 @@ public class AppDB {
         try {
             var statement = conn.createStatement();
             var results = statement.executeQuery(sql);
+
+            var metadata = results.getMetaData();
+                int cols = metadata.getColumnCount();
+                for (int index = 1; index <= cols; index++) {
+                    System.out.printf("%-25s | ", metadata.getColumnName(index));
+                }
+                System.out.println();
             while (results.next()) {
-                int cols = results.getMetaData().getColumnCount();
                 for (int index = 1; index <= cols; index++) {
                     System.out.printf("%-25s | ", results.getString(index));
                 }
