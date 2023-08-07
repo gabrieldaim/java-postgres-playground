@@ -2,26 +2,30 @@ package com.example.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
-public class EstadoDAO {
-    private Connection conn;
+import com.example.model.Estado;
 
+public class EstadoDAO extends DAO{
     public EstadoDAO(Connection conn) {
-        this.conn = conn;
+        super(conn);
     }
 
-    public void listar() {
-        try{
+    public List<Estado> listar() throws SQLException {
+        var lista = new LinkedList<Estado>();
+        
             var statement =conn.createStatement();
             var results = statement.executeQuery("select * from estado");
             while(results.next()){
-                System.out.printf("Id:" + results.getInt("id")+ " Nome:" + results.getString("nome") +  " UF:" + results.getString("uf")+ "\n");
-                System.out.println("finalizou listarEstados");
+                var estado = new Estado();
+                estado.setId(results.getLong("id"));
+                estado.setNome(results.getString("nome"));
+                estado.setUf(results.getString("uf"));
+                lista.add(estado);
             }    
-        } catch (SQLException e) {
-                System.err.println("não foi possivel executar a consulta ao banco de dados:" + e.getMessage()); 
 
-        }
+        return lista;
     }
 
     public void localizar(String uf) {

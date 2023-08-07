@@ -44,5 +44,9 @@ public class Estado {
         this.populacao = populacao;
     }
 
+    public String toString(){
+        return "Estado: " + nome + " Id: " + id + " UF: " + uf;
+    }
+
     
 }

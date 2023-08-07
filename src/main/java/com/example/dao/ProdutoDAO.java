@@ -5,12 +5,12 @@ import java.sql.SQLException;
 
 import com.example.model.Produto;
 
-public class ProdutoDAO {
-        private Connection conn;
+public class ProdutoDAO extends DAO{
 
-        public ProdutoDAO(Connection conn) {
-            this.conn = conn;
-        }
+
+    public ProdutoDAO(Connection conn) {
+        super(conn);
+    }
 
     public void excluir(long l) {
         var sql = "delete from produto where id=?";
