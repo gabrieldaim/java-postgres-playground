@@ -123,7 +123,7 @@ public class MathUtilTest {
     void testMdcCasoGeral12e9() {
         int a = 12, b = 9;
         int esperado = 3;
-        int obtido = MathUtil.mdc(a, b);
+        int obtido = MathUtil.mdc(a, b); 
 
         assertEquals(esperado,obtido);
     }

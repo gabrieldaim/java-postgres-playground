@@ -1,17 +1,15 @@
-package com.example.dao;
+package com.example.educacao.DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionManager {
-
-    private static final String PASSWORD = ""; 
     private static final String USERNAME = "gitpod";
-    private static final String JDBC_URL = "jdbc:postgresql://localhost/postgres";
-    
+    private static final String PASSWORD = "";
+    private static final String JDBC_URL = "jdbc:postgres://localhost/postgres";
 
-    public static Connection getConnection() throws SQLException{
+    public Connection getConnection() throws SQLException{
         return DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
     }
 }
