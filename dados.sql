@@ -6,7 +6,7 @@
 
 drop table if EXISTS aluno;
 CREATE TABLE aluno (
-    matricula int not NULL PRIMARY KEY,
+    matricula SERIAL not NULL PRIMARY KEY,
     nome VARCHAR(120) NOT NULL,
     nota1 DECIMAL(10,2),
     nota2 DECIMAL(10,2),
