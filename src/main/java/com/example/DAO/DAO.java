@@ -1,4 +1,4 @@
-package com.example.educacao.DAO;
+package com.example.DAO;
 
 import java.sql.Connection;
 
